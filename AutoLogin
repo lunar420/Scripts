@@ -1,0 +1,61 @@
+/// api_version=2
+var script = registerScript({
+    name: "AutoLogin",
+    version: "1.0.0",
+    authors: ["lunar"]
+});
+
+script.registerModule({
+    name: "AutoLogin",
+    category: "Misc", 
+    description: "Auto Registers You on cracked servers. (Made By lunar)"
+}, function (module) {
+    module.on("enable", function() {
+        Chat.print("Module enabled");
+    });
+});
+
+
+function AutoLogin() {
+
+    this.getName = function() {
+        return "AutoLogin";
+    };
+
+    this.getDescription = function() {
+        return "server auto Login ";
+    };
+
+    this.getCategory = function() {
+        return "Fun";
+	};
+
+	this.onEnable = function() {
+	}
+
+	this.onDisable = function() {
+	}
+
+
+	var Password = value.createText("Password", "YourPassword");
+	this.addValues = function(values) {
+		values.add(Password);
+	}
+
+	var pattLogin = "\/(l|L)ogin <.*>"
+	var pattRegister = "\/(r|R)egister <.*> <.*>"
+    this.onPacket = function(event){
+		var packet = event.getPacket();
+		if (packet instanceof S02PacketChat){
+			var str = packet.getChatComponent().getUnformattedText()
+			if (str.match(pattLogin)){
+				mc.thePlayer.sendChatMessage("/login " + Password.get())
+			}
+			if (str.match(pattRegister)){
+				mc.thePlayer.sendChatMessage("/register " + Password.get() + "" + Password.get())
+			}
+
+		}
+		
+	}
+}
